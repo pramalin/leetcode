@@ -5,23 +5,20 @@ Given a string s, return true if it is a palindrome, or false otherwise.
 """
 
 class Solution:
-    """
+    
     def isPalindrome(self, s: str) -> bool:
+        filtered_s = ''.join(char.lower() for char in s if char.isalnum())
         left = 0
-        end = len(s) - 1;
+        end = len(filtered_s) - 1
         right = end
         while (right >= 0 and left < end):
-            # skip non-alphanumeric characters
-            if(not s[left].isalnum()):
-                left += 1
-            elif (not s[right].isalnum()):
-                right -= 1
-            elif (s[left].lower() == s[right].lower()):
+            if (filtered_s[left].lower() == filtered_s[right].lower()):
                 left += 1
                 right -= 1
             else:
                 return False
         return True
+    
     """
     # Copilot optimized version
     def isPalindrome(self, s: str) -> bool:
@@ -29,7 +26,7 @@ class Solution:
         filtered_s = ''.join(char.lower() for char in s if char.isalnum())
         # Check if the filtered string is equal to its reverse
         return filtered_s == filtered_s[::-1]
-
+    """
 
 sol = Solution()
 
