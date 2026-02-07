@@ -1,3 +1,4 @@
+from traceback import print_tb
 from typing import Optional, List, Union
 from collections import deque
 
@@ -74,70 +75,11 @@ class TreeBuilder:
         return result
 
     @staticmethod
-    def toAscii(root: Optional[TreeNode]) -> None:
-        """
-        Renders a binary tree as a simple ASCII diagram in a top-down layout.
-
-        Args:
-            root (TreeNode): Root of the binary tree.
-        """
-        def build_tree_lines(node, curr_index, include_index=False, delimiter=" "):
-            if not node:
-                return [], 0, 0, 0
-
-            line1 = []
-            line2 = []
-            node_repr = f"{node.val}" if not include_index else f"{node.val}({curr_index})"
-
-            new_root_width = gap_size = len(node_repr)
-
-            # Get the left and right subtrees
-            l_box, l_box_width, l_root_start, l_root_end = build_tree_lines(
-                node.left, 2 * curr_index + 1, include_index, delimiter
-            )
-            r_box, r_box_width, r_root_start, r_root_end = build_tree_lines(
-                node.right, 2 * curr_index + 2, include_index, delimiter
-            )
-
-            # Draw the branch connecting the current root to left and right subtrees
-            if l_box_width > 0:
-                l_root = (l_root_start + l_root_end) // 2 + 1
-                line1.append(" " * (l_root + 1))
-                line1.append(" " * (l_box_width - l_root))
-                line2.append(" " * l_root + "/")
-                line2.append(" " * (l_box_width - l_root))
-                gap_size += 1
-            else:
-                gap_size += 1
-
-            line1.append(node_repr)
-            line2.append(" " * new_root_width)
-
-            if r_box_width > 0:
-                r_root = (r_root_start + r_root_end) // 2
-                line1.append(" " * r_root)
-                line1.append(" " * (r_box_width - r_root + 1))
-                line2.append(" " * r_root + "\\")
-                line2.append(" " * (r_box_width - r_root))
-                gap_size += 1
-
-            # Combine the left and right subtrees with the branches
-            gap = delimiter * gap_size
-            new_box = ["".join(line1), "".join(line2)]
-            for i in range(max(len(l_box), len(r_box))):
-                l_line = l_box[i] if i < len(l_box) else " " * l_box_width
-                r_line = r_box[i] if i < len(r_box) else " " * r_box_width
-                new_box.append(l_line + gap + r_line)
-
-            return new_box, len(new_box[0]), l_box_width + gap_size // 2, l_box_width + gap_size // 2 + new_root_width
-
-        if not root:
-            print("Tree is empty.")
-            return
-
-        tree_lines, *_ = build_tree_lines(root, 0, include_index=False)
-        for line in tree_lines:
-            print(line)
+    def printTree(root, prefix="", is_left=True):
+        if root is not None:
+            TreeBuilder.printTree(root.right, prefix + ("│   " if is_left else "    "), False)
+            print(prefix + ("└── " if is_left else "┌── ") + str(root.val))
+            TreeBuilder.printTree(root.left, prefix + ("    " if is_left else "│   "), True)
 
 # Example usage
 if __name__ == "__main__":
@@ -147,4 +89,4 @@ if __name__ == "__main__":
 
     print("Tree as list:", tb.toList(root))
     print("\nTree as ASCII diagram:")
-    tb.toAscii(root)
+    tb.printTree(root)

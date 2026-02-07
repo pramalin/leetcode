@@ -14,13 +14,10 @@
 226-invert-binary-tree.py
 """
 from utils.TreeBuilder import TreeBuilder
-from utils.TreeBuilder import TreeNode
 
-# Example usage
-if __name__ == "__main__":
-    nodes = [1, 2, 3, None, 4, 5, 6]
-    tb = TreeBuilder()
-    root = tb.buildTree(nodes)
+tb = TreeBuilder()
+tree = tb.buildTree([4,2,7,1,3,6,9])
 
-    print("\nTree as ASCII diagram:")
-    tb.toAscii(root)
+print(f"Original tree: {tb.toList(tree)}")
+
+tb.printTree(tree)

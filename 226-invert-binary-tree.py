@@ -30,5 +30,5 @@ print(f"Inv tree: {tb.toList(invTree)}")
 #inverted_tree = sol.invertTree(tree)
 #print(f"Inverted tree: {tb.toList(inverted_tree)}")
 
-tb.toAscii(tree)
-tb.toAscii(invTree)
+tb.print_tree(tree)
+tb.print_tree(invTree)
