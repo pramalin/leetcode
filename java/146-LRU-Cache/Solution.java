@@ -2,11 +2,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 class LRUCache {
     int capacity = 0;
     HashMap<Integer, Integer> cache = new HashMap<Integer, Integer>();
-    ArrayList<Integer> order = new ArrayList<Integer>();
+    LinkedList<Integer> order = new LinkedList<Integer>();
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
@@ -15,7 +16,7 @@ class LRUCache {
     public Integer get(int key) {
 	    if(this.cache.containsKey(key)) {
             // Move the accessed key to the end (most recently used)
-            this.order.removeIf(v -> v == key);
+            this.order.removeFirstOccurrence(key);
             this.order.add(key);
             return this.cache.get(key);
         } else {
@@ -26,10 +27,10 @@ class LRUCache {
     public void put(int key, int value) {
         if (this.cache.containsKey(key)) {
             // Update existing key
-            this.order.removeIf(v -> v == key);
+            this.order.removeFirstOccurrence(key);
         } else if (this.cache.keySet().size() >= this.capacity){
             // Remove the least recently used key
-            Integer lruKey = this.order.remove(0);
+            Integer lruKey = this.order.removeFirst();
             this.cache.remove(lruKey);
         }
         // Add or update the key-value pair
